@@ -26,6 +26,7 @@ int main(void)
     struct timeb start, end;
     int diff;
     int x =0;
+    int X =0;
     float XX[8][1000];
     float tt[1000];
     
@@ -43,7 +44,7 @@ int main(void)
     signal(SIGINT, Handler);
 
     if(ADS1256_init() == 1){
-        printf("\r\nEND                  \r\n");
+        printf("err");
         DEV_ModuleExit();
         exit(0);
     }
@@ -58,7 +59,7 @@ int main(void)
     
     
     
-    while( x<200 ){
+    while( diff<1000 ){
     
 
         
@@ -83,18 +84,20 @@ int main(void)
         }
         //printf("\33[8A");//Move the cursor up 8 lines
     x++;
+    diff = (int) (1000.0* (end.time - start.time) + (end.millitm - start.millitm));
     }
     ftime(&end);
     diff = (int) (1000.0* (end.time - start.time) + (end.millitm - start.millitm));
-    for (x=0;x<1000;x++){
-        fprintf(fp, " %d,  %f", x, tt[x]);
+    
+    for (X=0;X<1000;X++){
+        fprintf(fp, " %d,  %f", X, tt[X]);
         for(i=0;i<8;i++){
-            fprintf(fp, ", %f ", XX[i][x]);
+            fprintf(fp, ", %f ", XX[i][X]);
         }
         fprintf(fp, " \r\n");
     }
     
     fclose(fp);
-    printf("Done %u", diff);
+    printf("Done %u-000000000000%d", diff,x);
     return 0;
 }
