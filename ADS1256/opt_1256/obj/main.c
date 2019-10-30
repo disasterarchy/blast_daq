@@ -59,7 +59,7 @@ int main(void)
     
     
     
-    while( diff<1000 ){
+    while( diff<3000 ){
     
 
         

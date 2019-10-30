@@ -5,6 +5,8 @@
 import time
 import ADS1256
 import RPi.GPIO as GPIO
+import numpy as np
+from matplotlib import pyplot as plt
 
 
 try:
@@ -13,6 +15,7 @@ try:
 
     while(1):
         ADC_Value = ADC.ADS1256_GetAll()
+        
         print ("0 ADC = %lf"%(ADC_Value[0]*5.0/0x7fffff))
         print ("1 ADC = %lf"%(ADC_Value[1]*5.0/0x7fffff))
         print ("2 ADC = %lf"%(ADC_Value[2]*5.0/0x7fffff))
