@@ -45,7 +45,7 @@ total_time = end - start
 print("Time of capture: {}s".format(total_time))
 print("Sample rate requested={} actual={}".format(RATE, SAMPLES / total_time))
 plt.plot(np.arange(0,1000), data, 'ro')
-plt.plot(np.arange(0,1000), data1, 'bo')
-plt.plot(np.arange(0,1000), data2, 'go')
+#plt.plot(np.arange(0,1000), data1, 'bo')
+#plt.plot(np.arange(0,1000), data2, 'go')
 
 plt.show()
