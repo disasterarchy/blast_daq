@@ -1,7 +1,6 @@
 #!/usr/bin/python
 # -*- coding:utf-8 -*-
 
-
 import time
 import ADS1256
 import RPi.GPIO as GPIO
@@ -9,11 +8,16 @@ import numpy as np
 from matplotlib import pyplot as plt
 from datetime import datetime
 samples = 1000
-start = datetime.now()
+
+GPIO.setmode(GPIO.BCM)
+GPIO.setup(12,GPIO.OUT)
+p = GPIO.PWM(12,4)
+p.start(50.0)
+
 arr = np.zeros((samples,5))
 
-#try:
-if True:
+def doSample():
+    start = datetime.now()
     ADC = ADS1256.ADS1256()
     ADC.ADS1256_init()
 
@@ -27,33 +31,38 @@ if True:
                   ADC.ADS1256_GetChannalValue(3)*5.0/0x7fffff]
         #if ADC.ADS1256_GetChannalValue(0) > maxval:
             
-        
-        #print ("0 ADC = %lf"%(ADC_Value[0]*5.0/0x7fffff))
-        #print ("1 ADC = %lf"%(ADC_Value[1]*5.0/0x7fffff))
-        #print ("2 ADC = %lf"%(ADC_Value[2]*5.0/0x7fffff))
-        #print ("3 ADC = %lf"%(ADC_Value[3]*5.0/0x7fffff))
-        #print ("4 ADC = %lf"%(ADC_Value[4]*5.0/0x7fffff))
-        #print ("5 ADC = %lf"%(ADC_Value[5]*5.0/0x7fffff))
-        #print ("6 ADC = %lf"%(ADC_Value[6]*5.0/0x7fffff))
-        #print ("7 ADC = %lf"%(ADC_Value[7]*5.0/0x7fffff))
-        #print ("\33[9A")
+        if x % 1000 == 1:
+            tavg = arr[x,0]-arr[x-1000,0]
+            print("Average Time: %5.4f " % tavg)
     dt = datetime.now()-start
     sps =samples/dt.total_seconds()
     print("Total Time: %5.2f" % dt.total_seconds())
     print("SPS: %5.2f" % sps)
-    plt.plot(arr[:,0],arr[:,1], 'bo') #Reference
-    plt.plot(arr[:,0],arr[:,2], 'go') #Active1
-    plt.plot(arr[:,0],arr[:,3], 'mo') #Active2
-    plt.plot(arr[:,0],arr[:,4], 'r-') #Lamp
+    return arr
+    
+def endplots(arr):
+    plt.plot(arr[:,0],arr[:,1], 'b-', label="0-Ref") #Reference
+    plt.plot(arr[:,0],arr[:,2], 'go', label="1-Act1") #Active1
+    plt.plot(arr[:,0],arr[:,3], 'mo', label="2-Act2") #Active2
+    plt.plot(arr[:,0],arr[:,4], 'ro', label="3-Lamp") #Lamp
+    plt.legend()
     plt.show()
     
-    grarr = np.gradient(arr[:,0])
-    plt.plot(arr[:,0],grarr)
-    plt.show()
+    #grarr = np.gradient(arr[:,0])
+    #plt.plot(arr[:,0],grarr)
+    #plt.show()
     
     np.savetxt('out.csv', arr)
-else:
-#except:
-    GPIO.cleanup()
-    print ("\r\nProgram end     ")
-    exit()
+    
+    #GPIO.cleanup()
+    #print ("\r\nProgram end     ")
+    #exit()
+    
+def doBoth(n=1):
+    for i in range(0,n):
+        arr = doSample()
+        endplots(arr)
+    
+doBoth()
+
+    

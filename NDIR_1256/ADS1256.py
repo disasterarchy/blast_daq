@@ -7,9 +7,9 @@ ScanMode = 0
 
 # gain channel
 ADS1256_GAIN_E = {'ADS1256_GAIN_1' : 0, # GAIN   1
-                  'ADS1256_GAIN_2' : 1,	# GAIN   2
-                  'ADS1256_GAIN_4' : 2,	# GAIN   4
-                  'ADS1256_GAIN_8' : 3,	# GAIN   8
+                  'ADS1256_GAIN_2' : 1, # GAIN   2
+                  'ADS1256_GAIN_4' : 2, # GAIN   4
+                  'ADS1256_GAIN_8' : 3, # GAIN   8
                   'ADS1256_GAIN_16' : 4,# GAIN  16
                   'ADS1256_GAIN_32' : 5,# GAIN  32
                   'ADS1256_GAIN_64' : 6,# GAIN  64
@@ -138,13 +138,13 @@ class ADS1256:
 
     def ADS1256_SetDiffChannal(self, Channal):
         if Channal == 0:
-            self.ADS1256_WriteReg(REG_E['REG_MUX'], (0 << 4) | 1) 	#DiffChannal  AIN0-AIN1
+            self.ADS1256_WriteReg(REG_E['REG_MUX'], (0 << 4) | 1)   #DiffChannal  AIN0-AIN1
         elif Channal == 1:
-            self.ADS1256_WriteReg(REG_E['REG_MUX'], (2 << 4) | 3) 	#DiffChannal   AIN2-AIN3
+            self.ADS1256_WriteReg(REG_E['REG_MUX'], (2 << 4) | 3)   #DiffChannal   AIN2-AIN3
         elif Channal == 2:
-            self.ADS1256_WriteReg(REG_E['REG_MUX'], (4 << 4) | 5) 	#DiffChannal    AIN4-AIN5
+            self.ADS1256_WriteReg(REG_E['REG_MUX'], (4 << 4) | 5)   #DiffChannal    AIN4-AIN5
         elif Channal == 3:
-            self.ADS1256_WriteReg(REG_E['REG_MUX'], (6 << 4) | 7) 	#DiffChannal   AIN6-AIN7
+            self.ADS1256_WriteReg(REG_E['REG_MUX'], (6 << 4) | 7)   #DiffChannal   AIN6-AIN7
 
     def ADS1256_SetMode(self, Mode):
         ScanMode = Mode
@@ -159,7 +159,7 @@ class ADS1256:
         else:
             print("ID Read failed   ")
             return -1
-        self.ADS1256_ConfigADC(ADS1256_GAIN_E['ADS1256_GAIN_1'], ADS1256_DRATE_E['ADS1256_30000SPS'])
+        self.ADS1256_ConfigADC(ADS1256_GAIN_E['ADS1256_GAIN_2'], ADS1256_DRATE_E['ADS1256_30000SPS'])
         return 0
         
     def ADS1256_Read_ADC_Data(self):
